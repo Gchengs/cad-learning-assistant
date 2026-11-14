@@ -1,0 +1,36 @@
+# bin / obj
+bin/
+obj/
+*.user
+*.suo
+.vs/
+
+# 构建与自检产物
+build.log
+*.log
+verify-report.txt
+verify-summary.txt
+
+# 参考程序集（用 tools\prepare-refs.ps1 现取，不入库）
+build-support/net45-refs/
+
+# 教材素材：原图与 DWG 有版权，不入库
+assets/
+research/
+practice/
+
+# 运行产物
+src/CadLearningAssistant/bin/Debug/images/
+src/CadLearningAssistant/bin/Debug/questions.json
+
+# 系统
+Thumbs.db
+.DS_Store
+
+# 结果图由 tools/gen-images.ps1 确定性生成（见 README「配图是怎么来的」），
+# 二进制不入库：省体积，也避免每次改图产生无法 review 的 diff。
+src/CadLearningAssistant/content/images/*.png
+docs/images/*.png
+
+# 本地推送辅助脚本（含账号路径，不入库）
+push.bat

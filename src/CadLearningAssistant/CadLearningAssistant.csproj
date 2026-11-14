@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x64</Platform>
+    <ProjectGuid>{7A4C0A41-7C89-4B8C-A09D-8E67F4C438C0}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>CadLearningAssistant</RootNamespace>
+    <AssemblyName>CadLearningAssistant</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+    <!-- 本机未安装 .NET Framework 4.5 Targeting Pack，改用项目内自带的参考程序集。
+         如果以后装了正式 Targeting Pack，条件不成立，会自动回到系统路径。 -->
+    <TargetFrameworkRootPath Condition="!Exists('$(MSBuildProgramFiles32)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5') and !Exists('$(ProgramFiles)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5')">$(MSBuildProjectDirectory)\..\..\build-support\net45-refs\</TargetFrameworkRootPath>
+    <FileAlignment>512</FileAlignment>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>5</LangVersion>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+    <!-- AutoCAD 安装目录：默认取 Program Files 下的标准路径，
+         也可以设环境变量 AUTOCAD2016_DIR，或直接改这一行。 -->
+    <AutoCadDir Condition="'$(AutoCadDir)' == '' and '$(AUTOCAD2016_DIR)' != ''">$(AUTOCAD2016_DIR)</AutoCadDir>
+    <AutoCadDir Condition="'$(AutoCadDir)' == ''">$(ProgramFiles)\Autodesk\AutoCAD 2016</AutoCadDir>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="acmgd">
+      <HintPath>$(AutoCadDir)\acmgd.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="acdbmgd">
+      <HintPath>$(AutoCadDir)\acdbmgd.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="accoremgd">
+      <HintPath>$(AutoCadDir)\accoremgd.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Plugin.cs" />
+    <Compile Include="Models\QuestionModels.cs" />
+    <Compile Include="Infrastructure\QuestionBank.cs" />
+    <Compile Include="Services\AutoCadChecker.cs" />
+    <Compile Include="Services\ClickPointFinder.cs" />
+    <Compile Include="Services\RibbonProbe.cs" />
+    <Compile Include="UI\LearningPalette.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="content\questions.json">
+      <Link>questions.json</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <!-- 每道题一张「最终结果示意图」，面板按 <题号>.png 去读，缺图只会少一张图，不会影响加载 -->
+    <Content Include="content\images\*.png">
+      <Link>images\%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
