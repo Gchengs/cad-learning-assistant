@@ -48,6 +48,13 @@ tools/                           题库与配图的生成、校验脚本
 build-vs.bat                     一键编译（自动找 MSBuild）
 ```
 
+## 拿到本地
+
+```bash
+git clone https://github.com/Gchengs/cad-learning-assistant.git
+cd cad-learning-assistant
+```
+
 ## 编译
 
 第一次编译前先生成结果图（约 10 秒，需要 Python 3；跳过后插件仍能跑，只是面板显示「本题没有结果示意图」）：
